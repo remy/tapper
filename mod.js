@@ -1,3 +1,4 @@
+#!/usr/bin/env -S deno run --allow-write --allow-read
 import * as path from 'https://deno.land/std/path/mod.ts';
 import { parse } from 'https://deno.land/std/flags/mod.ts';
 import Watcher from './watch.js';
