@@ -1,58 +1,40 @@
 import * as path from 'https://deno.land/std/path/mod.ts';
-import { Tapper, PROGRAM, CODE } from './tapper.js';
+import { parse } from 'https://deno.land/std/flags/mod.ts';
 import Watcher from './watch.js';
 import config from './config.js';
+import build from './build.js';
+let configName = 'tapper.yml';
 
-const configName = 'tapper.yml';
-
+const args = parse(Deno.args, { alias: { c: 'config', w: 'watch' } });
 const cwd = Deno.args[0];
+
+if (args.config) {
+  configName = args.config;
+} else {
+  configName = path.join(cwd, configName);
+}
 
 let c = await config(path.join(cwd, configName));
 
-const filenames = c.source.map((_) => Object.keys(_)[0]);
-const watch = new Watcher(cwd, [...filenames, configName]);
+if (args.watch) {
+  const filenames = c.source
+    .map((_) => Object.keys(_)[0])
+    .map((_) => path.join(cwd, _));
 
-console.log('watching ' + filenames.join(', '));
+  const watch = new Watcher(cwd, [...filenames, configName]);
 
-watch.on('watch', async (e) => {
-  if (e.paths.find((_) => _.endsWith('/' + configName))) {
-    c = await config(path.join(cwd, configName));
-  }
+  console.log('watching ' + filenames.join(', '));
 
-  const t = new Tapper();
-  const files = await Promise.all(
-    c.source.map((source) => {
-      const name = Object.keys(source)[0];
-      return Deno.readFile(path.join(cwd, name)).then((data) => {
-        return {
-          res: {
-            data,
-            file: {
-              name,
-            },
-          },
-          config: source[name],
-        };
-      });
-    })
-  );
+  watch.on('watch', async (e) => {
+    if (e.paths.find((_) => _.endsWith('/' + configName))) {
+      c = await config(path.join(cwd, configName));
+    }
 
-  files.forEach(({ res, config }) => {
-    const block = t.add(res);
-    const name = res.file.name;
-    block.dataType = config.type.toLowerCase() === 'program' ? PROGRAM : CODE;
-    block.p1 = config.start;
-    block.p2 = block.type === PROGRAM ? res.data.length : 0x8000;
-    block.filename = config.filename || name;
+    await build({ config: c, cwd });
+
+    console.log('rebuilt ' + c.filename);
   });
-
-  const res = t.generate();
-
-  let ext = '';
-  if ((cwd, c.filename.split('.').pop().toLowerCase() !== 'tap')) {
-    ext = '.tap';
-  }
-
-  Deno.writeFileSync(path.join(cwd, c.filename + ext), res);
-  console.log('rebuilt ' + c.filename);
-});
+} else {
+  await build({ config: c, cwd });
+  console.log(`generated ${c.filename}`);
+}

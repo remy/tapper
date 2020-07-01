@@ -1,11 +1,10 @@
 import EventEmitter from 'https://deno.land/x/events@v1.0.0/mod.ts';
 import debounce from 'https://deno.land/x/lodash/debounce.js';
-import * as path from 'https://deno.land/std/path/mod.ts';
 
 class Watcher extends EventEmitter {
-  constructor(cwd, files) {
+  constructor(files) {
     super();
-    const watcher = Deno.watchFs(files.map((_) => path.join(cwd, _)));
+    const watcher = Deno.watchFs(files);
 
     const emit = debounce(
       (event) => {
