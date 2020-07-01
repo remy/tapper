@@ -1,6 +1,14 @@
 # tapper
 
-Generates a TAP file from a configuration.
+Watches the working working directory and generates a TAP file from a configuration.
+
+## To install
+
+Required [deno](https://deno.land/), to install:
+
+```
+deno install gh:remy:tapper
+```
 
 ## Example configuration
 
@@ -18,3 +26,5 @@ source:
       type: code
       start: 32767
 ```
+
+With this in the same directory as `interrupt.bas` and `iv2.bin`, when these files change (and are regenerated) then the `interrupt.tap` file is generated.

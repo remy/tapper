@@ -1,9 +1,9 @@
-import * as path from "https://deno.land/std/path/mod.ts";
-import { Tapper, PROGRAM, CODE } from "./tapper.js";
-import Watcher from "./watch.ts";
-import config from "./config.js";
+import * as path from 'https://deno.land/std/path/mod.ts';
+import { Tapper, PROGRAM, CODE } from './tapper.js';
+import Watcher from './watch.ts';
+import config from './config.js';
 
-const configName = "tapper.yml";
+const configName = 'tapper.yml';
 
 const cwd = Deno.args[0];
 
@@ -12,10 +12,10 @@ let c = await config(path.join(cwd, configName));
 const filenames = c.source.map((_) => Object.keys(_)[0]);
 const watch = new Watcher(cwd, [...filenames, configName]);
 
-console.log("watching " + filenames.join(", "));
+console.log('watching ' + filenames.join(', '));
 
-watch.on("watch", async (e) => {
-  if (e.paths.find((_) => _.endsWith("/" + configName))) {
+watch.on('watch', async (e) => {
+  if (e.paths.find((_) => _.endsWith('/' + configName))) {
     c = await config(path.join(cwd, configName));
   }
 
@@ -34,13 +34,13 @@ watch.on("watch", async (e) => {
           config: source[name],
         };
       });
-    }),
+    })
   );
 
   files.forEach(({ res, config }) => {
     const block = t.add(res);
     const name = res.file.name;
-    block.dataType = config.type.toLowerCase() === "program" ? PROGRAM : CODE;
+    block.dataType = config.type.toLowerCase() === 'program' ? PROGRAM : CODE;
     block.p1 = config.start;
     block.p2 = block.type === PROGRAM ? res.data.length : 0x8000;
     block.filename = config.filename || name;
@@ -48,6 +48,11 @@ watch.on("watch", async (e) => {
 
   const res = t.generate();
 
-  Deno.writeFileSync(path.join(cwd, c.filename), res);
-  console.log("rebuilt " + c.filename);
+  let ext = '';
+  if ((cwd, c.filename.split('.').pop().toLowerCase() !== 'tap')) {
+    ext = '.tap';
+  }
+
+  Deno.writeFileSync(path.join(cwd, c.filename + ext), res);
+  console.log('rebuilt ' + c.filename);
 });
