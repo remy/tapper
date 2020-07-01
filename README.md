@@ -7,7 +7,7 @@ Watches the working working directory and generates a TAP file from a configurat
 Required [deno](https://deno.land/), to install:
 
 ```
-deno install --allow-read --allow-write https://github.com/remy/tapper/mod.js
+deno install --allow-read --allow-write https://remy.github.io/tapper/mod.js
 ```
 
 ## Example configuration
