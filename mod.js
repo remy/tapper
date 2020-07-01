@@ -6,8 +6,11 @@ import config from './config.js';
 import build from './build.js';
 let configName = 'tapper.yml';
 
-const args = parse(Deno.args, { alias: { c: 'config', w: 'watch' } });
-const cwd = Deno.args[0];
+const args = parse(Deno.args, {
+  boolean: ['watch'],
+  alias: { c: 'config', w: 'watch' },
+});
+const cwd = args._[0];
 
 if (args.config) {
   configName = args.config;
@@ -22,7 +25,7 @@ if (args.watch) {
     .map((_) => Object.keys(_)[0])
     .map((_) => path.join(cwd, _));
 
-  const watch = new Watcher(cwd, [...filenames, configName]);
+  const watch = new Watcher([...filenames, configName]);
 
   console.log('watching ' + filenames.join(', '));
 
