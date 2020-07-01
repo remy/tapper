@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/index.css">
+    <title>tapper</title>
+  </head>
+
+  <body>
+
+    <h1>tapper</h1>
+    <p>Watches the working working directory and generates a TAP file from a configuration.</p>
+    <h2>To install</h2>
+    <p>Required <a href="https://deno.land/">deno</a>, to install:</p>
+    <pre><code>deno install --allow-read --allow-write https://github.com/remy/tapper/mod.js
+</code></pre>
+    <h2>Example configuration</h2>
+    <p>Must be called <code>tapper.yml</code> and found in the directory you run <code>tapper</code> from.</p>
+    <pre><code class="language-yaml">---
+filename: interrupt
+source:
+  - interrupt.bas:
+      start: 10
+      type: program
+      filename: interrupt
+  - iv2.bin:
+      type: code
+      start: 32767
+</code></pre>
+    <p>With this in the same directory as <code>interrupt.bas</code> and <code>iv2.bin</code>, when these files change
+      (and are regenerated) then the <code>interrupt.tap</code> file is generated.</p>
+  </body>
+
+</html>

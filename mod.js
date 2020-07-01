@@ -1,6 +1,6 @@
 import * as path from 'https://deno.land/std/path/mod.ts';
 import { Tapper, PROGRAM, CODE } from './tapper.js';
-import Watcher from './watch.ts';
+import Watcher from './watch.js';
 import config from './config.js';
 
 const configName = 'tapper.yml';

@@ -1,0 +1,20 @@
+{
+  "name": "tapper",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "prettier": {
+    "singleQuote": true
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "zxspectrum",
+    "tap",
+    "basic",
+    "spectrum"
+  ],
+  "author": "Remy Sharp",
+  "license": "MIT",
+  "description": "Creates .TAP files based on a configuration"
+}

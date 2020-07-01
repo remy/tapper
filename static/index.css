@@ -1,0 +1,100 @@
+html {
+  --c-fg: #111;
+  --c-bg: #fefefe;
+  --c-bg-alt: #eee;
+  --c-cta: blue;
+  --c-disabled: #4444fa;
+  --c-hover: #eb00ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    --c-bg: #222;
+    --c-fg: #efefef;
+    --c-bg-alt: #000;
+    --c-cta: hotpink;
+    --c-disabled: #e2a2c2;
+    --c-hover: #eb00ff;
+  }
+}
+
+body {
+  font-size: 16px;
+  max-width: 920px;
+  padding: 20px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  background: var(--c-bg);
+  color: var(--c-fg);
+}
+
+p,
+li {
+  line-height: 1.6;
+}
+
+h2 {
+  margin-top: 40px;
+}
+
+ul,
+ol {
+  padding-left: 20px;
+}
+
+a[href] {
+  color: var(--c-cta);
+}
+
+a[href]:hover {
+  color: var(--c-hover);
+}
+
+a[href^='ftp:'] {
+  color: var(--c-disabled);
+}
+
+a[href^='ftp:']:after {
+  content: ' (ftp)';
+  text-decoration: none;
+}
+
+summary {
+  cursor: pointer;
+}
+
+summary h3 {
+  display: inline;
+}
+
+details {
+  padding: 16px;
+  background: var(--c-bg-alt);
+}
+
+details pre {
+  overflow: scroll;
+}
+
+details + details {
+  margin-top: 20px;
+}
+
+main + footer {
+  margin-top: 40px;
+}
+
+@media (max-width: 900px) {
+  pre {
+    overflow: scroll;
+  }
+}
+
+.large-lists li {
+  margin-bottom: 20px;
+}
+
+.opcodes ul {
+  padding: 0;
+}
